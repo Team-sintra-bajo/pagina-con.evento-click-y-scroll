@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Act1</title>
+    <style>
+        body {
+            height: 2000px; /* Altura de ejemplo para permitir el scroll */
+            transition: background-color 0.5s; /* Transición suave para el cambio de color de fondo */
+            margin: 0; /* Eliminar márgenes por defecto */
+            padding: 0; /* Eliminar padding por defecto */
+            font-family: Arial, sans-serif; /* Tipo de fuente */
+        }
+
+        .header {
+            background-image: url('fondo.jpg'); /* Imagen de fondo para el encabezado */
+            background-size: cover; /* Ajustar imagen al tamaño del contenedor */
+            background-position: center; /* Posición centrada de la imagen de fondo */
+            height: 400px; /* Altura del encabezado */
+            display: flex; /* Utilizar flexbox para centrar contenido */
+            justify-content: center; /* Centrar contenido horizontalmente */
+            align-items: center; /* Centrar contenido verticalmente */
+            color: white; /* Color de texto */
+            font-size: 36px; /* Tamaño de fuente del título */
+            text-align: center; /* Alinear texto al centro */
+        }
+
+        .section {
+            height: 100vh;
+            display: flex;
+            justify-content: space-between; /* Distribuir espacio entre elementos */
+            align-items: center;
+            color: white;
+            background-size: cover;
+            background-position: center;
+            text-align: left; /* Alinear texto a la izquierda */
+            transition: background-image 0.5s ease-in-out;
+            position: relative;
+            padding: 0 20px; /* Agregar padding para separación de los bordes */
+        }
+
+        .text {
+            max-width: 50%; /* Limitar el ancho del texto */
+            margin-left: 20px; /* Mover el texto hacia la derecha */
+        }
+
+        .carousel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            max-width: 300px; /* Ancho máximo del carrusel */
+            margin: 0 auto; /* Centrar el carrusel */
+        }
+
+        .carousel img {
+            max-width: 100%; /* Ajustar el tamaño máximo de la imagen */
+            height: auto;
+        }
+
+        .carousel-buttons {
+            position: absolute;
+            bottom: 10px; /* Alinear los botones en la parte inferior */
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .prev-button, .next-button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .prev-button {
+            left: 10px;
+        }
+
+        .next-button {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Sabores del alma</h1>
+    </div>
+
+    <div class="section" id="section2">
+        <div class="text black-text">
+            <h2>Bebidas</h2>
+            <p>Nos complace invitarlos a vivir una experiencia única en Bar de Sabores, donde cada sorbo cuenta una historia de calidad y dedicación.</p>
+        </div>
+        <div class="carousel">
+            <img src="platillo1.jpg" id="carousel-image-2">
+            <div class="carousel-buttons">
+                <button class="prev-button" onclick="prevImage('section2')">&#10094;</button>
+                <button class="next-button" onclick="nextImage('section2')">&#10095;</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="section1">
+        <div class="text black-text">
+            <h2>Postres</h2>
+            <p>Disfruta de nuestra selección de postres exquisitos, cada uno elaborado con ingredientes frescos y de la más alta calidad.</p>
+        </div>
+        <div class="carousel">
+            <img src="bebida1.jpg" id="carousel-image-1">
+            <div class="carousel-buttons">
+                <button class="prev-button" onclick="prevImage('section1')">&#10094;</button>
+                <button class="next-button" onclick="nextImage('section1')">&#10095;</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript para cambiar el color de fondo al hacer scroll
+        window.addEventListener('scroll', function(){
+            const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+            if(scrollPosition > 100){
+                document.body.style.backgroundColor = 'black';
+            } else {
+                document.body.style.backgroundColor = 'white';
+            }
+        });
+
+        const images = {
+            section1: ['bebida1.jpg', 'bebida2.jpg', 'bebida3.jpg'],
+            section2: ['platillo1.jpg', 'platillo2.jpg', 'platillo3.jpg']
+        };
+
+        let currentImageIndex = {
+            section1: 1,
+            section2: 0
+        };
+
+        function showImage(section) {
+            const imageElement = document.getElementById(`carousel-image-${section === 'section1' ? '1' : '2'}`);
+            imageElement.src = images[section][currentImageIndex[section]];
+        }
+
+        function prevImage(section) {
+            currentImageIndex[section] = (currentImageIndex[section] - 1 + images[section].length) % images[section].length;
+            showImage(section);
+        }
+
+        function nextImage(section) {
+            currentImageIndex[section] = (currentImageIndex[section] + 1) % images[section].length;
+            showImage(section);
+        }
+
+        // Mostrar la primera imagen al cargar la página para cada sección
+        showImage('section2');
+        showImage('section1');
+
+        // Event listener para las teclas P y B
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'b' || event.key === 'P') {
+                // Navegar a la sección 2 (Bebidas)
+                window.scrollTo({ top: document.getElementById('section2').offsetTop, behavior: 'smooth' });
+            } else if (event.key === 'p' || event.key === 'B') {
+                // Navegar a la sección 1 (Postres)
+                window.scrollTo({ top: document.getElementById('section1').offsetTop, behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>
